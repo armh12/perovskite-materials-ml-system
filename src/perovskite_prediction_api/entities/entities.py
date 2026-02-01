@@ -1,6 +1,8 @@
 from typing import List
-from pydantic import BaseModel
-from perovskite_prediction_api.entities.dictioanary import Element, SpaceGroup
+from pydantic import BaseModel, field_validator
+
+from perovskite_prediction_api.entities.dictioanary_materials import ETLStack, CellArchitecture
+from perovskite_prediction_api.entities.dictionary_api import Element, SpaceGroup, BackContact
 
 
 class ElementFraction(BaseModel):
@@ -14,16 +16,28 @@ class PerovskiteComposition(BaseModel):
     C_site: List[ElementFraction]
 
 
-class IonicRadii(BaseModel):
-    r_A: float
-    r_B: float
-    r_C: float
-
-
 class BandGapPredictionRequest(BaseModel):
     inorganic_composition: bool
     perovskite_composition: PerovskiteComposition
-    ionic_raddi: IonicRadii
-    octahedral_factor: float
-    tolerance_factor: float
     space_group: SpaceGroup
+
+
+class StabilityTemperatureRange(BaseModel):
+    temperature_start: float
+    temperature_end: float
+
+
+class PCET80PredictionRequest(BaseModel):
+    perovskite_composition: PerovskiteComposition
+    temperature_range: StabilityTemperatureRange
+    band_gap: float
+    dimension_list_of_layers: int
+    cell_area: float
+    pce_initial: float
+    stability_protocol: str
+    stability_light_intensity: float
+    stability_time_total_exposure: float
+    backcontact: BackContact
+    etl_stack_sequence: ETLStack
+    cell_architecture: CellArchitecture
+
