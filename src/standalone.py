@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import uvicorn
 
-from perovskite_prediction_api.app import app
+from ml_prediction_web_service.app import app
 
 
 load_dotenv()

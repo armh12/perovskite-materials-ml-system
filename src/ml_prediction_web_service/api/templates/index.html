@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perovskite Lab | ML Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <nav class="border-b border-slate-800 p-4 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight text-blue-400">PerovSKITE<span class="text-white">.AI</span></h1>
+            <div class="space-x-6 text-sm">
+                <a href="#" class="hover:text-blue-400">Predictor</a>
+                <a href="/docs" class="hover:text-blue-400 text-slate-400">API Docs</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto py-12 px-4">
+        <header class="mb-12">
+            <h2 class="text-4xl font-extrabold mb-2 text-white">Band Gap & Stability</h2>
+            <p class="text-slate-400">Machine learning pipeline for perovskite solar cell optimization.</p>
+        </header>
+
+        <div class="bg-slate-800/50 rounded-2xl border border-slate-700 p-8 shadow-2xl">
+            <h3 class="text-lg font-semibold mb-6 flex items-center">
+                <span class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mr-3 text-xs">01</span>
+                Perovskite Composition
+            </h3>
+
+            <div id="composition-app">
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-slate-400 mb-3">A-Site Cations (e.g., MA, FA, Cs)</label>
+                    <div id="a-site-list" class="space-y-2">
+                        </div>
+                    <button onclick="addRow('a-site-list')" class="mt-2 text-xs text-blue-400 hover:text-blue-300">+ Add Cation</button>
+                </div>
+
+                <button id="predict-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02]">
+                    Run ML Inference
+                </button>
+            </div>
+        </div>
+
+        <div id="result-card" class="mt-8 hidden animate-fade-in">
+             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl">
+                <span class="text-blue-200 text-sm uppercase tracking-widest font-semibold">Predicted Band Gap</span>
+                <div class="text-6xl font-black mt-2"><span id="prediction-value">---</span> <span class="text-2xl">eV</span></div>
+             </div>
+        </div>
+    </main>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

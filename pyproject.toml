@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "perovskite_prediction_api"
+name = "ml_prediction_web_service"
 version = "0.0.2"
 authors = ["Arman Hovhannisyan <hovhannisyanarman062@gmail.com>"]
 description = "Perovskite analysis with ML"
