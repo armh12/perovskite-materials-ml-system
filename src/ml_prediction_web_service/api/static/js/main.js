@@ -1,4 +1,3 @@
-// Function to add a dynamic row for A, B, or C sites
 function addRow(containerId) {
     const container = document.getElementById(containerId);
     const div = document.createElement('div');
@@ -16,18 +15,15 @@ function addRow(containerId) {
     container.appendChild(div);
 }
 
-// Initial Row
 addRow('a-site-list');
 
 document.getElementById('predict-btn').addEventListener('click', async () => {
-    // 1. Gather A-site data
     const aSiteRows = document.querySelectorAll('#a-site-list > div');
     const a_site = Array.from(aSiteRows).map(row => ({
         name: row.querySelector('.element-name').value,
         frequence: parseFloat(row.querySelector('.element-frac').value)
     }));
 
-    // 2. Prepare Payload (matching your Pydantic BandGapPredictionRequest)
     const payload = {
         perovskite_composition: {
             A_site: a_site,

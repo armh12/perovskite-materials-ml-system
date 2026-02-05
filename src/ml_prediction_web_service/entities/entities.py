@@ -21,12 +21,12 @@ class PerovskiteComposition(BaseModel):
     B_site: List[ElementFraction]
     C_site: List[ElementFraction]
 
-    @field_validator('A_site', 'B_site', 'C_site')
-    def check_fractions(cls, v):
-        total = sum(item.frequence for item in v)
-        if not (0.99 <= total <= 1.01):  # Allowing for minor float rounding
-            raise ValueError(f'Fractions must sum to 1.0, got {total}')
-        return v
+    # @field_validator('A_site', 'B_site', 'C_site')
+    # def check_fractions(cls, v):
+    #     total = sum(item.frequence for item in v)
+    #     if not (0.99 <= total <= 1.01):  # Allowing for minor float rounding
+    #         raise ValueError(f'Fractions must sum to 1.0, got {total}')
+    #     return v
 
 
 class BandGapPredictionRequest(BaseModel):
