@@ -36,7 +36,6 @@ document.getElementById('predict-btn').addEventListener('click', async () => {
         space_group: "Pm3m"
     };
 
-    // 3. Hit the API
     try {
         const response = await fetch('/prediction/band_gap', {
             method: 'POST',
@@ -45,7 +44,6 @@ document.getElementById('predict-btn').addEventListener('click', async () => {
         });
         const data = await response.json();
         
-        // 4. Show Result
         document.getElementById('result-card').classList.remove('hidden');
         document.getElementById('prediction-value').innerText = data.toFixed(3);
     } catch (err) {

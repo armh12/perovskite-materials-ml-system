@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, Field, validator, field_validator
+from pydantic import BaseModel, field_validator
 
 from ml_prediction_web_service.entities.dictionary import (
     Element,
@@ -21,12 +21,20 @@ class PerovskiteComposition(BaseModel):
     B_site: List[ElementFraction]
     C_site: List[ElementFraction]
 
-    # @field_validator('A_site', 'B_site', 'C_site')
-    # def check_fractions(cls, v):
-    #     total = sum(item.frequence for item in v)
-    #     if not (0.99 <= total <= 1.01):  # Allowing for minor float rounding
-    #         raise ValueError(f'Fractions must sum to 1.0, got {total}')
-    #     return v
+    @field_validator('A_site', 'B_site', 'C_site')
+    def check_fractions(cls, v):
+        total_A = sum(item.frequence for item in cls.A_site)
+        if not (0.99 <= total_A <= 1.01):
+            raise ValueError(f'Fractions of A site must sum to 1.0, got {total_A}')
+
+        total_B = sum(item.frequence for item in cls.B_site)
+        if not (0.99 <= total_B <= 1.01):
+            raise ValueError(f'Fractions of B site must sum to 1.0, got {total_B}')
+
+        total_C = sum(item.frequence for item in cls.C_site)
+        if not (2.99 <= total_C <= 3.01):
+            raise ValueError(f'Fractions of C site must sum to 3.0, got {total_C}')
+        return v
 
 
 class BandGapPredictionRequest(BaseModel):
