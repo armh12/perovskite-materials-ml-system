@@ -17,24 +17,12 @@ class ModelRepository(ABC):
     def get_pce_t80_xgb_model(self):
         pass
 
-    def get_cell_architecture_model(self):
-        pass
-
+    @abstractmethod
     def get_jv_pce_model(self):
         pass
 
-    def get_thickness_model(self):
-        pass
 
-    @staticmethod
-    def _write_to_temp_file(model_bytes: bytes):
-        with tempfile.NamedTemporaryFile(suffix=".json", delete=True) as f:
-            f.write(model_bytes)
-            tmp_path = f.name
-        return tmp_path
-
-
-class GoogleModelRepository(ModelRepository):
+class GoogleModelRepository:
     def __init__(
             self,
             google_drive: GoogleDriveStorage
@@ -47,6 +35,14 @@ class GoogleModelRepository(ModelRepository):
         model = XGBRegressor()
         model.load_model(tmp_path)
         return model
+
+    @staticmethod
+    def _write_to_temp_file(model_bytes: bytes):
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=True) as f:
+            f.write(model_bytes)
+            tmp_path = f.name
+        return tmp_path
+
     
     
 class LocalModelRepository(ModelRepository):
@@ -63,6 +59,12 @@ class LocalModelRepository(ModelRepository):
 
     def get_pce_t80_xgb_model(self) -> XGBRegressor:
         path_to_model = os.path.join(self._models_path, SavedModelName.PCE_T80_XGB.value)
+        model = XGBRegressor()
+        model.load_model(path_to_model)
+        return model
+
+    def get_jv_pce_model(self) -> XGBRegressor:
+        path_to_model = os.path.join(self._models_path, SavedModelName.PCE_JV_XGB.value)
         model = XGBRegressor()
         model.load_model(path_to_model)
         return model
