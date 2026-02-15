@@ -29,33 +29,34 @@ class ModelRepository(ABC):
         pass
 
 
-class GoogleModelRepository:
+class GoogleModelRepository(ModelRepository):
     def __init__(
             self,
             google_drive: GoogleDriveStorage
     ):
         self._drive = google_drive
 
-    def get_band_gap_xgb_model(self) -> XGBRegressor:
+    def get_band_gap_xgb_model(self):
         model_bytes = self._drive.download_file(f"perovskite/models/{SavedModelName.BAND_GAP_XGB.value}")
         tmp_path = self._write_to_temp_file(model_bytes)
-        model = XGBRegressor()
-        model.load_model(tmp_path)
-        return model
+        return self._load_model(tmp_path)
+
+    def get_pce_t80_xgb_model(self):
+        model_bytes = self._drive.download_file(f"perovskite/models/{SavedModelName.PCE_T80_XGB.value}")
+        tmp_path = self._write_to_temp_file(model_bytes)
+        return self._load_model(tmp_path)
+
+    def get_jv_pce_model(self):
+        model_bytes = self._drive.download_file(f"perovskite/models/{SavedModelName.PCE_JV_XGB.value}")
+        tmp_path = self._write_to_temp_file(model_bytes)
+        return self._load_model(tmp_path)
 
     @staticmethod
     def _write_to_temp_file(model_bytes: bytes):
-        with tempfile.NamedTemporaryFile(suffix=".json", delete=True) as f:
+        with tempfile.NamedTemporaryFile(suffix=".joblib", delete=False) as f:
             f.write(model_bytes)
             tmp_path = f.name
         return tmp_path
-
-
-    
-        pass
-
-    def get_pce_t80_xgb_model(self) -> XGBRegressor:
-        pass
 
 
 class LocalModelRepository(ModelRepository):
@@ -64,14 +65,14 @@ class LocalModelRepository(ModelRepository):
     ):
         self._models_path = Path(models_path)
 
-    def get_band_gap_xgb_model(self) -> XGBRegressor:
+    def get_band_gap_xgb_model(self):
         path_to_model = self._models_path / SavedModelName.BAND_GAP_XGB.value
         return self._load_model(path_to_model)
 
-    def get_pce_t80_xgb_model(self) -> XGBRegressor:
+    def get_pce_t80_xgb_model(self):
         path_to_model = self._models_path / SavedModelName.PCE_T80_XGB.value
         return self._load_model(path_to_model)
 
-    def get_jv_pce_model(self) -> XGBRegressor:
-        path_to_model = os.path.join(self._models_path, SavedModelName.PCE_JV_XGB.value)
+    def get_jv_pce_model(self):
+        path_to_model = self._models_path / SavedModelName.PCE_JV_XGB.value
         return self._load_model(path_to_model)

@@ -250,4 +250,9 @@ class HTLStack(BaseStructureDictionary):
 
 @enum.unique
 class StabilityProtocol(BaseStructureDictionary):
-    ...
+    ISOS_D_1 = "ISOS-D-1", 1
+    ISOS_D_2 = "ISOS-D-2", 2
+    ISOS_D_3 = "ISOS-D-3", 3
+    ISOS_L_1 = "ISOS-L-1", 4
+    ISOS_L_2 = "ISOS-L-2", 5
+    ISOS_L_3 = "ISOS-L-3", 6

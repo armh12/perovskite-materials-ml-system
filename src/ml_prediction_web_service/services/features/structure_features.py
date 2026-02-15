@@ -1,26 +1,18 @@
-from typing import Tuple
+from typing import Tuple, List
 
 import pandas as pd
 
-from ml_prediction_web_service.entities.dictionary import Element, SpaceGroup, Site, Dimension
+from ml_prediction_web_service.entities.dictionary import SpaceGroup, Dimension
+from ml_prediction_web_service.entities.entities import ElementFraction
 
 
-def calculate_effective_radii_for_site(row: pd.Series, site: Site) -> float:
-    input_dict = row.to_dict()
-    r_eff = 0.
-    sites = [key for key in input_dict if key.startswith(f'{site.value}_') and not key.endswith("_coef")]
-    
-    for _site in sites:
-        element_name = input_dict[_site]
-        if element_name is None or pd.isna(element_name):
-            continue
-        coef = float(input_dict[f'{_site}_coef'])
-        if _site.startswith(site.value):
-            coef = coef / 3.0
-        element_entity = Element.get_element_by_name(element_name)       
-        r_eff += coef * element_entity.ionic_radii
-        
-    return r_eff
+def calculate_effective_radii(fractions: List[ElementFraction]) -> float:
+    r_eff = 0.0
+    total_coef = 0.0
+    for item in fractions:
+        r_eff += item.frequence * item.name.ionic_radii
+        total_coef += item.frequence
+    return r_eff / total_coef if total_coef > 0 else 0.0
 
 
 def compute_dimensionality_indicator(r_a_eff: float) -> int:
@@ -74,4 +66,3 @@ def compute_space_group(tolerance_factor: float, dimension: float, is_inorganic:
     # 0D Perovskites
     elif dimension == Dimension.ZERO_DIM.nm:
         return 'Unknown'  # Often molecular, not well-defined
-
